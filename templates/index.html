@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Substack Inbox Scraper</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 2rem auto; }
+    .menu-box { border: 1px solid #bbb; border-radius: 6px; padding: 2rem; background: #f8f8f8; }
+    .menu-box h2 { margin-top: 0; }
+    .option { margin-bottom: 1.5em; }
+    .error { color: #c00; } .success { color: #080; }
+    input[type="text"] { padding: 4px; font-size: 1em; }
+    button { font-size: 1rem; padding: 0.5rem 1rem; }
+    .label { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Substack Inbox Scraper</h1>
+  <div class="menu-box">
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in msgs %}
+        <p class="{{cat}}">{{msg}}</p>
+      {% endfor %}
+    {% endwith %}
+
+    <div class="option">
+      <form action="/set_date" method="post">
+        <label class="label">1. Set date filter:</label>
+        <input type="text" name="date_filter" placeholder="e.g. LAST 7 DAYS or 05-25 TO 05-26" required>
+        <button type="submit">Set</button>
+      </form>
+    </div>
+
+    <div class="option">
+      <form action="/clear_date" method="post">
+        <label class="label">2. Clear date filter:</label>
+        <button type="submit">Clear</button>
+      </form>
+    </div>
+
+    <div class="option">
+      <label class="label">3. Show current date filter:</label>
+      <span>
+        {% if current_date_filter %}
+          <b>{{ current_date_filter }}</b>
+        {% else %}
+          <i>No date filter set.</i>
+        {% endif %}
+      </span>
+    </div>
+
+    <div class="option">
+      <form action="/extract" method="get">
+        <label class="label">4. Download Inbox:</label>
+        <button type="submit">Download Inbox as TXT</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
